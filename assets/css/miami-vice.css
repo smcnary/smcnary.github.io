@@ -1,0 +1,932 @@
+/* Miami Vice Minimal/Industrial Theme CSS */
+
+/* CSS Custom Properties for Color Palette */
+:root {
+  --miami-bg: #0B0F14;
+  --miami-surface: #121826;
+  --miami-surface-alt: #0E141F;
+  --miami-text: #E5EEF5;
+  --miami-subtext: #98A2B3;
+  --miami-aqua: #2EE4D6;
+  --miami-pink: #FF5FB2;
+  --miami-cyan: #55D6FF;
+  --miami-glow: rgba(46, 228, 214, 0.3);
+  --miami-pink-glow: rgba(255, 95, 178, 0.3);
+}
+
+/* Tailwind CSS Custom Colors */
+.bg-miami-bg { background-color: var(--miami-bg); }
+.bg-miami-surface { background-color: var(--miami-surface); }
+.bg-miami-surface-alt { background-color: var(--miami-surface-alt); }
+.text-miami-text { color: var(--miami-text); }
+.text-miami-subtext { color: var(--miami-subtext); }
+.text-miami-aqua { color: var(--miami-aqua); }
+.text-miami-pink { color: var(--miami-pink); }
+.text-miami-cyan { color: var(--miami-cyan); }
+.border-miami-aqua { border-color: var(--miami-aqua); }
+.border-miami-pink { border-color: var(--miami-pink); }
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--miami-bg);
+  color: var(--miami-text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Noise Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Navigation */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(11, 15, 20, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(46, 228, 214, 0.1);
+  transition: all 0.3s ease;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--miami-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--miami-aqua);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--miami-aqua), var(--miami-pink));
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: var(--miami-text);
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-button:hover {
+  background: rgba(46, 228, 214, 0.1);
+  color: var(--miami-aqua);
+  box-shadow: 0 0 20px var(--miami-glow);
+}
+
+/* Hero Section */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  background: linear-gradient(135deg, var(--miami-bg) 0%, var(--miami-surface) 100%);
+}
+
+.hero-content {
+  max-width: 800px;
+  z-index: 2;
+}
+
+.hero-greeting {
+  font-size: 1.125rem;
+  color: var(--miami-subtext);
+  margin-bottom: 1rem;
+  animation: fadeInUp 1s ease;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--miami-aqua), var(--miami-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  animation: fadeInUp 1s ease 0.2s both;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--miami-text);
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 1s ease 0.4s both;
+}
+
+.hero-description {
+  font-size: 1.125rem;
+  color: var(--miami-subtext);
+  margin-bottom: 2rem;
+  animation: fadeInUp 1s ease 0.6s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 1s ease 0.8s both;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--miami-aqua);
+  animation: bounce 2s infinite;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--miami-aqua), var(--miami-cyan));
+  color: var(--miami-bg);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px var(--miami-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--miami-glow);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--miami-aqua);
+  border: 2px solid var(--miami-aqua);
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--miami-aqua);
+  color: var(--miami-bg);
+  box-shadow: 0 0 20px var(--miami-glow);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--miami-text);
+  border: 1px solid var(--miami-text);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-outline:hover {
+  background: var(--miami-text);
+  color: var(--miami-bg);
+  text-decoration: none;
+}
+
+/* Sections */
+.section {
+  padding: 6rem 2rem;
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: var(--miami-text);
+  margin-bottom: 1rem;
+}
+
+.section-line {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--miami-aqua), var(--miami-pink));
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: var(--miami-subtext);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.service-card {
+  background: var(--miami-surface);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(46, 228, 214, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--miami-aqua);
+  box-shadow: 0 20px 40px rgba(46, 228, 214, 0.1);
+}
+
+.service-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--miami-aqua), var(--miami-cyan));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: var(--miami-bg);
+  font-size: 2rem;
+}
+
+.service-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--miami-text);
+  margin-bottom: 1rem;
+}
+
+.service-description {
+  color: var(--miami-subtext);
+  line-height: 1.6;
+}
+
+/* Portfolio Grid */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.portfolio-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--miami-surface);
+  transition: all 0.3s ease;
+}
+
+.portfolio-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(46, 228, 214, 0.1);
+}
+
+.portfolio-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-image img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.portfolio-item:hover .portfolio-image img {
+  transform: scale(1.1);
+}
+
+.portfolio-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(46, 228, 214, 0.9), rgba(255, 95, 178, 0.9));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: var(--miami-bg);
+}
+
+.portfolio-item:hover .portfolio-overlay {
+  opacity: 1;
+}
+
+.portfolio-overlay h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-overlay p {
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+/* Skills Grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.skill-card {
+  text-align: center;
+  padding: 2rem;
+  background: var(--miami-surface);
+  border-radius: 12px;
+  border: 1px solid rgba(46, 228, 214, 0.1);
+  transition: all 0.3s ease;
+}
+
+.skill-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--miami-aqua);
+  box-shadow: 0 15px 30px rgba(46, 228, 214, 0.1);
+}
+
+.skill-chart {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+}
+
+.skill-circle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.skill-bg {
+  fill: none;
+  stroke: rgba(46, 228, 214, 0.1);
+  stroke-width: 8;
+}
+
+.skill-progress {
+  fill: none;
+  stroke: var(--miami-aqua);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 339.292;
+  stroke-dashoffset: 339.292;
+  transition: stroke-dashoffset 1s ease;
+}
+
+.skill-percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--miami-aqua);
+}
+
+.skill-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--miami-text);
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, var(--miami-surface), var(--miami-surface-alt));
+  padding: 6rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: var(--miami-text);
+  margin-bottom: 1rem;
+}
+
+.cta-description {
+  font-size: 1.125rem;
+  color: var(--miami-subtext);
+  margin-bottom: 2rem;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Contact Section */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 3rem;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--miami-surface-alt);
+  border-radius: 12px;
+  border: 1px solid rgba(46, 228, 214, 0.1);
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  border-color: var(--miami-aqua);
+  box-shadow: 0 10px 20px rgba(46, 228, 214, 0.1);
+}
+
+.contact-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--miami-aqua), var(--miami-cyan));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--miami-bg);
+  font-size: 1.25rem;
+}
+
+.contact-details h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--miami-text);
+  margin-bottom: 0.25rem;
+}
+
+.contact-details p {
+  color: var(--miami-subtext);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input,
+.form-textarea {
+  background: var(--miami-surface-alt);
+  border: 1px solid rgba(46, 228, 214, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  color: var(--miami-text);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--miami-aqua);
+  box-shadow: 0 0 0 3px rgba(46, 228, 214, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--miami-subtext);
+}
+
+/* Footer */
+.footer {
+  background: var(--miami-surface);
+  padding: 3rem 2rem 1rem;
+  border-top: 1px solid rgba(46, 228, 214, 0.1);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-tagline {
+  color: var(--miami-subtext);
+  font-size: 0.875rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  background: var(--miami-surface-alt);
+  border: 1px solid rgba(46, 228, 214, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--miami-text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background: var(--miami-aqua);
+  color: var(--miami-bg);
+  border-color: var(--miami-aqua);
+  box-shadow: 0 0 20px var(--miami-glow);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(46, 228, 214, 0.1);
+  color: var(--miami-subtext);
+  font-size: 0.875rem;
+}
+
+/* CV Section */
+.cv-timeline {
+    margin-top: 3rem;
+}
+
+.cv-item {
+    background: var(--miami-surface-alt);
+    border: 1px solid rgba(46, 228, 214, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.cv-item:hover {
+    border-color: var(--miami-aqua);
+    box-shadow: 0 10px 30px rgba(46, 228, 214, 0.1);
+    transform: translateY(-4px);
+}
+
+.cv-item::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--miami-aqua), var(--miami-pink));
+    border-radius: 2px;
+}
+
+.cv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.cv-company h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--miami-text);
+    margin-bottom: 0.5rem;
+}
+
+.cv-position {
+    color: var(--miami-aqua);
+    font-weight: 500;
+    font-size: 1.125rem;
+}
+
+.cv-duration {
+    background: rgba(46, 228, 214, 0.1);
+    color: var(--miami-aqua);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: 1px solid rgba(46, 228, 214, 0.2);
+}
+
+.cv-content {
+    color: var(--miami-subtext);
+}
+
+.cv-achievements {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cv-achievements li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.cv-achievements li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 6px;
+    height: 6px;
+    background: var(--miami-aqua);
+    border-radius: 50%;
+}
+
+.cv-skills-section {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(46, 228, 214, 0.1);
+}
+
+.cv-skills-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--miami-text);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.cv-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.cv-skill-category {
+    background: var(--miami-surface-alt);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(46, 228, 214, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cv-skill-category:hover {
+    border-color: var(--miami-aqua);
+    box-shadow: 0 8px 25px rgba(46, 228, 214, 0.1);
+}
+
+.cv-skill-category h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--miami-aqua);
+    margin-bottom: 1rem;
+}
+
+.cv-skill-category p {
+    color: var(--miami-subtext);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Responsive Design for CV Section */
+@media (max-width: 768px) {
+    .cv-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .cv-duration {
+        align-self: flex-start;
+    }
+    
+    .cv-skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Scroll to Top */
+.scroll-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--miami-aqua), var(--miami-cyan));
+  border: none;
+  border-radius: 50%;
+  color: var(--miami-bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+}
+
+.scroll-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-top:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px var(--miami-glow);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .services-grid,
+  .portfolio-grid,
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 1rem;
+  }
+  
+  .section {
+    padding: 4rem 1rem;
+  }
+  
+  .hero-section {
+    padding: 1rem;
+  }
+  
+  .cta-section {
+    padding: 4rem 1rem;
+  }
+}
+
+/* Utility Classes */
+.text-gradient {
+  background: linear-gradient(135deg, var(--miami-aqua), var(--miami-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow {
+  box-shadow: 0 0 20px var(--miami-glow);
+}
+
+.glow-pink {
+  box-shadow: 0 0 20px var(--miami-pink-glow);
+}
