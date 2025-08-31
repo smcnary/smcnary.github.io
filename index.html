@@ -61,11 +61,11 @@
                 <p class="hero-description">Building scalable SaaS and enterprise applications across logistics, retail, and cloud-native platforms with experience in .NET, React, Angular, and cloud services.</p>
             </div>
             <div class="hero-actions">
-                <button class="btn-primary">View My Work</button>
-                <button class="btn-secondary">Download Resume</button>
+                <button class="btn-primary" onclick="scrollToSection('portfolio')">View My Work</button>
+                <button class="btn-secondary" onclick="downloadResume()">Download Resume</button>
             </div>
         </div>
-        <div class="scroll-indicator">
+        <div class="scroll-indicator" onclick="scrollToSection('services')">
             <i data-lucide="chevron-down"></i>
         </div>
     </section>
@@ -431,8 +431,8 @@
                     Let's discuss how I can help architect and build your next scalable solution.
                 </p>
                 <div class="cta-actions">
-                    <button class="btn-primary">Hire Me</button>
-                    <button class="btn-secondary">View Resume</button>
+                    <button class="btn-primary" onclick="scrollToSection('contact')">Hire Me</button>
+                    <button class="btn-secondary" onclick="downloadResume()">View Resume</button>
                 </div>
             </div>
         </div>

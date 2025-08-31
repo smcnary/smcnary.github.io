@@ -220,6 +220,81 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
+// Scroll to section function
+function scrollToSection(sectionId) {
+    const targetSection = document.querySelector(`#${sectionId}`);
+    if (targetSection) {
+        const offsetTop = targetSection.offsetTop - 80; // Account for fixed navbar
+        window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+        });
+    }
+}
+
+// Download resume function
+function downloadResume() {
+    // Create a simple text-based resume content
+    const resumeContent = `Sean McNary - Full Stack Engineer
+
+📧 smcnary@live.com | 📱 786-213-3333 | 🌐 smcnary.github.io
+💼 linkedin.com/in/smcnary | 🖥️ github.com/SMCNARY
+
+SUMMARY
+Full Stack Engineer with experience building scalable SaaS and enterprise applications across logistics, retail, and cloud-native platforms. Skilled in .NET, React, Angular, Symfony, Python, and D3.js with expertise in AWS and Azure cloud services. Strong foundation in system architecture, CI/CD, data visualization, and modernization of legacy systems.
+
+CORE SKILLS
+• Languages/Frameworks: C#, PHP, JavaScript, Python, .NET Core, React, Angular, Symfony, D3.js
+• Cloud: AWS (Lambda, DynamoDB, Aurora, S3, Athena), Azure (PaaS, IaaS)
+• Databases: SQL Server, PostgreSQL, MySQL
+• Practices: Microservices, REST APIs, CI/CD, Agile/Scrum
+• Tools: GitHub, Azure DevOps, Docker, SonarQube
+
+EXPERIENCE
+
+McNary Technical LLC – Full Stack Engineer | 2014 – Present
+• Delivered SaaS and SEO platforms for logistics and legal clients
+• Built React + Symfony + PostgreSQL dashboard for real-time shipment tracking
+• Implemented D3.js visualizations for SEO performance trends and logistics analytics
+• Developed multi-tenant APIs and AWS data pipelines for SEO automation
+
+Alliance Resources – Senior Developer | 2022 – 2024
+• Migrated enterprise systems to .NET Core and Azure DevOps CI/CD
+• Refactored financial reporting tools, improving speed and reliability
+
+QuikTrip – Senior Developer | 2018 – 2022
+• Supported 140+ .NET applications across retail operations
+• Designed Azure services and led contractor team in CI/CD adoption
+
+AAON, Inc. – Senior Engineer | 2016 – 2018
+• Rewrote contractor system as modern React web app
+• Migrated legacy VB6 systems to .NET/JavaScript
+
+Contract Roles – Software Engineer | 2012 – 2016
+• Delivered enterprise solutions using .NET, Angular, React, SQL Server
+• Designed APIs and optimized databases for logistics and marketing clients`;
+
+    // Create a blob with the resume content
+    const blob = new Blob([resumeContent], { type: 'text/plain' });
+    
+    // Create a download link
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Sean_McNary_Resume.txt';
+    
+    // Trigger the download
+    document.body.appendChild(a);
+    a.click();
+    
+    // Clean up
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    
+    // Show notification
+    showNotification('Resume downloaded successfully!', 'success');
+}
+
 function showNotification(message, type = 'info') {
     // Create notification element
     const notification = document.createElement('div');
