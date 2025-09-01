@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeContactForm();
     initializeScrollToTop();
     initializeSmoothScrolling();
+    initializeSearch();
+    initializeDarkMode();
 });
 
 // Navigation functionality
@@ -478,3 +480,195 @@ function throttle(func, limit) {
 window.addEventListener('scroll', throttle(() => {
     // Scroll-based animations can be added here
 }, 16)); // ~60fps
+
+// Search functionality
+function initializeSearch() {
+    const searchBtn = document.getElementById('searchBtn');
+    const searchModal = document.getElementById('searchModal');
+    const searchClose = document.getElementById('searchClose');
+    const searchInput = document.getElementById('searchInput');
+    const searchSubmit = document.getElementById('searchSubmit');
+    const searchResults = document.getElementById('searchResults');
+
+    // Search data - content from the page
+    const searchData = [
+        {
+            title: "C# & .NET Development",
+            description: "Full stack development with C# and .NET Core framework",
+            section: "skills"
+        },
+        {
+            title: "React & Angular",
+            description: "Frontend development with React and Angular frameworks",
+            section: "skills"
+        },
+        {
+            title: "AWS & Azure",
+            description: "Cloud services including Lambda, DynamoDB, Aurora, S3, and Azure PaaS/IaaS",
+            section: "skills"
+        },
+        {
+            title: "D3.js Data Visualization",
+            description: "Interactive charts and analytics dashboards",
+            section: "portfolio"
+        },
+        {
+            title: "Full Stack Engineer",
+            description: "11+ years building scalable SaaS and enterprise applications",
+            section: "about"
+        },
+        {
+            title: "McNary Technical LLC",
+            description: "Full Stack Engineer 2014 – Present",
+            section: "experience"
+        },
+        {
+            title: "Alliance Resources",
+            description: "Senior Developer 2022 – 2024",
+            section: "experience"
+        },
+        {
+            title: "QuikTrip",
+            description: "Senior Developer 2018 – 2022",
+            section: "experience"
+        },
+        {
+            title: "AAON, Inc.",
+            description: "Senior Engineer 2016 – 2018",
+            section: "experience"
+        },
+        {
+            title: "Contact Information",
+            description: "smcnary@live.com | 786-213-3333 | Tulsa, Oklahoma",
+            section: "contact"
+        }
+    ];
+
+    // Open search modal
+    searchBtn.addEventListener('click', () => {
+        searchModal.classList.add('active');
+        searchInput.focus();
+    });
+
+    // Close search modal
+    searchClose.addEventListener('click', closeSearchModal);
+    
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && searchModal.classList.contains('active')) {
+            closeSearchModal();
+        }
+    });
+
+    // Close on backdrop click
+    searchModal.addEventListener('click', (e) => {
+        if (e.target === searchModal) {
+            closeSearchModal();
+        }
+    });
+
+    function closeSearchModal() {
+        searchModal.classList.remove('active');
+        searchInput.value = '';
+        searchResults.innerHTML = '';
+    }
+
+    // Search functionality
+    function performSearch(query) {
+        if (!query.trim()) {
+            searchResults.innerHTML = '';
+            return;
+        }
+
+        const results = searchData.filter(item => 
+            item.title.toLowerCase().includes(query.toLowerCase()) ||
+            item.description.toLowerCase().includes(query.toLowerCase())
+        );
+
+        displayResults(results);
+    }
+
+    function displayResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="search-result-item"><div class="search-result-title">No results found</div><div class="search-result-description">Try different keywords</div></div>';
+            return;
+        }
+
+        searchResults.innerHTML = results.map(result => `
+            <div class="search-result-item" onclick="navigateToSection('${result.section}')">
+                <div class="search-result-title">${result.title}</div>
+                <div class="search-result-description">${result.description}</div>
+            </div>
+        `).join('');
+    }
+
+    // Search on input
+    searchInput.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+    });
+
+    // Search on enter
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch(searchInput.value);
+        }
+    });
+
+    // Search button click
+    searchSubmit.addEventListener('click', () => {
+        performSearch(searchInput.value);
+    });
+}
+
+// Navigate to section function
+function navigateToSection(section) {
+    const sectionMap = {
+        'skills': 'skills',
+        'portfolio': 'portfolio',
+        'about': 'home',
+        'experience': 'cv',
+        'contact': 'contact'
+    };
+
+    const targetSection = sectionMap[section] || section;
+    document.getElementById('searchModal').classList.remove('active');
+    scrollToSection(targetSection);
+}
+
+// Dark Mode functionality
+function initializeDarkMode() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const body = document.body;
+
+    // Check for saved theme preference or default to 'dark'
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    body.setAttribute('data-theme', currentTheme);
+    updateDarkModeIcon(currentTheme);
+
+    // Toggle dark mode
+    darkModeToggle.addEventListener('click', () => {
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateDarkModeIcon(newTheme);
+    });
+
+    function updateDarkModeIcon(theme) {
+        if (theme === 'light') {
+            darkModeIcon.setAttribute('data-lucide', 'sun');
+            darkModeIcon.style.transform = 'rotate(180deg)';
+        } else {
+            darkModeIcon.setAttribute('data-lucide', 'moon');
+            darkModeIcon.style.transform = 'rotate(0deg)';
+        }
+        
+        // Re-initialize lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+}
