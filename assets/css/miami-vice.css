@@ -14,6 +14,34 @@
   --miami-pink-glow: rgba(255, 95, 178, 0.3);
 }
 
+/* Dark Mode CSS Variables */
+[data-theme="dark"] {
+  --miami-bg: #0B0F14;
+  --miami-surface: #121826;
+  --miami-surface-alt: #0E141F;
+  --miami-text: #E5EEF5;
+  --miami-subtext: #98A2B3;
+  --miami-aqua: #2EE4D6;
+  --miami-pink: #FF5FB2;
+  --miami-cyan: #55D6FF;
+  --miami-glow: rgba(46, 228, 214, 0.3);
+  --miami-pink-glow: rgba(255, 95, 178, 0.3);
+}
+
+/* Light Mode CSS Variables */
+[data-theme="light"] {
+  --miami-bg: #F8FAFC;
+  --miami-surface: #FFFFFF;
+  --miami-surface-alt: #F1F5F9;
+  --miami-text: #1E293B;
+  --miami-subtext: #64748B;
+  --miami-aqua: #0891B2;
+  --miami-pink: #DB2777;
+  --miami-cyan: #0284C7;
+  --miami-glow: rgba(8, 145, 178, 0.3);
+  --miami-pink-glow: rgba(219, 39, 119, 0.3);
+}
+
 /* Tailwind CSS Custom Colors */
 .bg-miami-bg { background-color: var(--miami-bg); }
 .bg-miami-surface { background-color: var(--miami-surface); }
@@ -135,6 +163,174 @@ body {
   background: rgba(46, 228, 214, 0.1);
   color: var(--miami-aqua);
   box-shadow: 0 0 20px var(--miami-glow);
+}
+
+/* Dark Mode CSS Variables */
+[data-theme="dark"] {
+  --miami-bg: #0B0F14;
+  --miami-surface: #121826;
+  --miami-surface-alt: #0E141F;
+  --miami-text: #E5EEF5;
+  --miami-subtext: #98A2B3;
+  --miami-aqua: #2EE4D6;
+  --miami-pink: #FF5FB2;
+  --miami-cyan: #55D6FF;
+  --miami-glow: rgba(46, 228, 214, 0.3);
+  --miami-pink-glow: rgba(255, 95, 178, 0.3);
+}
+
+/* Light Mode CSS Variables */
+[data-theme="light"] {
+  --miami-bg: #F8FAFC;
+  --miami-surface: #FFFFFF;
+  --miami-surface-alt: #F1F5F9;
+  --miami-text: #1E293B;
+  --miami-subtext: #64748B;
+  --miami-aqua: #0891B2;
+  --miami-pink: #DB2777;
+  --miami-cyan: #0284C7;
+  --miami-glow: rgba(8, 145, 178, 0.3);
+  --miami-pink-glow: rgba(219, 39, 119, 0.3);
+}
+
+/* Search Modal */
+.search-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 15, 20, 0.95);
+  backdrop-filter: blur(20px);
+  z-index: 2000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.search-modal.active {
+  display: flex;
+  opacity: 1;
+}
+
+.search-modal-content {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  background: var(--miami-surface);
+  border: 1px solid rgba(46, 228, 214, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.search-header h3 {
+  color: var(--miami-text);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.search-close {
+  background: none;
+  border: none;
+  color: var(--miami-subtext);
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-close:hover {
+  color: var(--miami-text);
+  background: rgba(46, 228, 214, 0.1);
+}
+
+.search-input-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 1rem;
+  background: var(--miami-surface-alt);
+  border: 1px solid rgba(46, 228, 214, 0.2);
+  border-radius: 8px;
+  color: var(--miami-text);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--miami-aqua);
+  box-shadow: 0 0 0 3px var(--miami-glow);
+}
+
+.search-input::placeholder {
+  color: var(--miami-subtext);
+}
+
+.search-submit {
+  padding: 1rem;
+  background: var(--miami-aqua);
+  border: none;
+  border-radius: 8px;
+  color: var(--miami-bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-submit:hover {
+  background: var(--miami-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--miami-glow);
+}
+
+.search-results {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  padding: 1rem;
+  border: 1px solid rgba(46, 228, 214, 0.1);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-result-item:hover {
+  background: rgba(46, 228, 214, 0.05);
+  border-color: var(--miami-aqua);
+}
+
+.search-result-title {
+  color: var(--miami-aqua);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.search-result-description {
+  color: var(--miami-subtext);
+  font-size: 0.875rem;
+}
+
+/* Dark Mode Toggle Animation */
+#darkModeIcon {
+  transition: transform 0.3s ease;
 }
 
 /* Hero Section */
