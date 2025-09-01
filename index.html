@@ -116,15 +116,36 @@
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
             <div class="nav-actions">
-                <button class="icon-button" aria-label="Search">
+                <button class="icon-button" id="searchBtn" aria-label="Search">
                     <i data-lucide="search"></i>
                 </button>
-                <button class="icon-button" aria-label="Settings">
-                    <i data-lucide="settings"></i>
+                <button class="icon-button" id="darkModeToggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon" id="darkModeIcon"></i>
                 </button>
             </div>
         </div>
     </nav>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-header">
+                <h3>Search</h3>
+                <button class="search-close" id="searchClose">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" id="searchInput" placeholder="Search for skills, projects, or experience..." class="search-input">
+                <button class="search-submit" id="searchSubmit">
+                    <i data-lucide="search"></i>
+                </button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <!-- Search results will be populated here -->
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section id="home" class="hero-section">
