@@ -1,4 +1,4 @@
-name: Deploy Portfolio Website
+name: Portfolio Website CI/CD
 
 on:
   push:
