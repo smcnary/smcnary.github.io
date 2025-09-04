@@ -82,11 +82,11 @@
             <div id="chart6"></div>
         </div>
         <div class="chart">
-            <div class="chart-title">Data Flow</div>
+            <div class="chart-title">Data Flow Architecture</div>
             <div id="chart7"></div>
         </div>
         <div class="chart">
-            <div class="chart-title">Strategic Overview</div>
+            <div class="chart-title">Multi-Metric Dashboard</div>
             <div id="chart8"></div>
         </div>
     </div>
@@ -545,7 +545,7 @@
             });
         }
 
-        // Chart 7: Network Graph - Data Flow
+        // Chart 7: Network Graph - Data Flow Architecture
         function createChart7() {
             const nodes = [
                 { id: 'API', group: 1 },
@@ -576,79 +576,59 @@
                 .append('g')
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
-            const simulation = d3.forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id(d => d.id).distance(80))
-                .force('charge', d3.forceManyBody().strength(-300))
-                .force('center', d3.forceCenter(width / 2, height / 2));
+            // Fixed positions for better layout
+            const nodePositions = {
+                'API': { x: width / 2, y: height / 2 },
+                'Database': { x: width * 0.2, y: height * 0.3 },
+                'Cache': { x: width * 0.8, y: height * 0.3 },
+                'Frontend': { x: width / 2, y: height * 0.8 },
+                'CDN': { x: width * 0.8, y: height * 0.8 },
+                'Analytics': { x: width * 0.2, y: height * 0.8 }
+            };
 
             const color = d3.scaleOrdinal()
                 .domain([1, 2, 3])
                 .range([colors.aqua, colors.pink, colors.cyan]);
 
+            // Add links
             const link = svg.append('g')
                 .selectAll('line')
                 .data(links)
                 .enter().append('line')
                 .attr('stroke', colors.aqua)
                 .attr('stroke-opacity', 0.6)
-                .attr('stroke-width', d => Math.sqrt(d.value));
+                .attr('stroke-width', d => Math.sqrt(d.value))
+                .attr('x1', d => nodePositions[d.source].x)
+                .attr('y1', d => nodePositions[d.source].y)
+                .attr('x2', d => nodePositions[d.target].x)
+                .attr('y2', d => nodePositions[d.target].y);
 
+            // Add nodes
             const node = svg.append('g')
                 .selectAll('circle')
                 .data(nodes)
                 .enter().append('circle')
-                .attr('r', 15)
+                .attr('r', 20)
+                .attr('cx', d => nodePositions[d.id].x)
+                .attr('cy', d => nodePositions[d.id].y)
                 .attr('fill', d => color(d.group))
                 .attr('stroke', colors.darkBg)
-                .attr('stroke-width', 2)
-                .call(d3.drag()
-                    .on('start', dragstarted)
-                    .on('drag', dragged)
-                    .on('end', dragended));
+                .attr('stroke-width', 3);
 
+            // Add labels
             const label = svg.append('g')
                 .selectAll('text')
                 .data(nodes)
                 .enter().append('text')
                 .text(d => d.id)
+                .attr('x', d => nodePositions[d.id].x)
+                .attr('y', d => nodePositions[d.id].y)
                 .attr('text-anchor', 'middle')
                 .attr('dy', '0.35em')
                 .style('fill', colors.text)
                 .style('font-size', '12px')
-                .style('font-weight', 'bold');
-
-            simulation.on('tick', () => {
-                link
-                    .attr('x1', d => d.source.x)
-                    .attr('y1', d => d.source.y)
-                    .attr('x2', d => d.target.x)
-                    .attr('y2', d => d.target.y);
-
-                node
-                    .attr('cx', d => d.x)
-                    .attr('cy', d => d.y);
-
-                label
-                    .attr('x', d => d.x)
-                    .attr('y', d => d.y);
-            });
-
-            function dragstarted(event, d) {
-                if (!event.active) simulation.alphaTarget(0.3).restart();
-                d.fx = d.x;
-                d.fy = d.y;
-            }
-
-            function dragged(event, d) {
-                d.fx = event.x;
-                d.fy = event.y;
-            }
-
-            function dragended(event, d) {
-                if (!event.active) simulation.alphaTarget(0);
-                d.fx = null;
-                d.fy = null;
-            }
+                .style('font-weight', 'bold')
+                .style('pointer-events', 'none');
         }
 
         // Chart 8: Multi-line Chart - Strategic Overview
