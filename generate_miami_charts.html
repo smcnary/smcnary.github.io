@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miami Vice D3 Charts Generator</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            background: #0B0F14;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart {
+            background: #121826;
+            border: 1px solid rgba(46, 228, 214, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            height: 400px;
+        }
+        .chart-title {
+            color: #E5EEF5;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        button {
+            background: #2EE4D6;
+            color: #0B0F14;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 10px;
+        }
+        button:hover {
+            background: #55D6FF;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #E5EEF5; margin-bottom: 20px;">Miami Vice D3 Charts Generator</h1>
+        <button onclick="generateAllCharts()">Generate All Charts</button>
+        <button onclick="downloadAllCharts()">Download All Charts</button>
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart">
+            <div class="chart-title">Performance Analytics</div>
+            <div id="chart1"></div>
+        </div>
+        <div class="chart">
+            <div class="chart-title">Revenue Trends</div>
+            <div id="chart2"></div>
+        </div>
+        <div class="chart">
+            <div class="chart-title">User Engagement</div>
+            <div id="chart3"></div>
+        </div>
+        <div class="chart">
+            <div class="chart-title">System Metrics</div>
+            <div id="chart4"></div>
+        </div>
+        <div class="chart">
+            <div class="chart-title">Market Analysis</div>
+            <div id="chart5"></div>
+        </div>
+        <div class="chart">
+            <div class="chart-title">Operational KPIs</div>
+            <div id="chart6"></div>
+        </div>
+        <div class="chart">
+            <div class="chart-title">Data Flow</div>
+            <div id="chart7"></div>
+        </div>
+        <div class="chart">
+            <div class="chart-title">Strategic Overview</div>
+            <div id="chart8"></div>
+        </div>
+    </div>
+
+    <script>
+        // Miami Vice Color Palette
+        const colors = {
+            aqua: '#2EE4D6',
+            pink: '#FF5FB2',
+            cyan: '#55D6FF',
+            darkBg: '#0B0F14',
+            surface: '#121826',
+            text: '#E5EEF5',
+            subtext: '#98A2B3'
+        };
+
+        // Chart 1: Line Chart - Performance Analytics
+        function createChart1() {
+            const data = [
+                { month: 'Jan', value: 65, target: 70 },
+                { month: 'Feb', value: 72, target: 70 },
+                { month: 'Mar', value: 68, target: 70 },
+                { month: 'Apr', value: 75, target: 70 },
+                { month: 'May', value: 82, target: 70 },
+                { month: 'Jun', value: 78, target: 70 }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const svg = d3.select('#chart1')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleBand()
+                .domain(data.map(d => d.month))
+                .range([0, width])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, 100])
+                .range([height, 0]);
+
+            // Add grid lines
+            svg.append('g')
+                .attr('class', 'grid')
+                .call(d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(5))
+                .style('stroke', colors.surface)
+                .style('stroke-opacity', 0.3);
+
+            // Add lines
+            const line = d3.line()
+                .x(d => x(d.month) + x.bandwidth() / 2)
+                .y(d => y(d.value));
+
+            const targetLine = d3.line()
+                .x(d => x(d.month) + x.bandwidth() / 2)
+                .y(d => y(d.target));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', colors.aqua)
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', colors.pink)
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5')
+                .attr('d', targetLine);
+
+            // Add dots
+            svg.selectAll('.dot')
+                .data(data)
+                .enter().append('circle')
+                .attr('cx', d => x(d.month) + x.bandwidth() / 2)
+                .attr('cy', d => y(d.value))
+                .attr('r', 4)
+                .attr('fill', colors.aqua)
+                .attr('stroke', colors.darkBg)
+                .attr('stroke-width', 2);
+
+            // Add axes
+            svg.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .style('color', colors.text);
+
+            svg.append('g')
+                .call(d3.axisLeft(y))
+                .style('color', colors.text);
+        }
+
+        // Chart 2: Bar Chart - Revenue Trends
+        function createChart2() {
+            const data = [
+                { quarter: 'Q1', revenue: 1200000, growth: 0.15 },
+                { quarter: 'Q2', revenue: 1350000, growth: 0.12 },
+                { quarter: 'Q3', revenue: 1480000, growth: 0.10 },
+                { quarter: 'Q4', revenue: 1620000, growth: 0.09 }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 60 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const svg = d3.select('#chart2')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleBand()
+                .domain(data.map(d => d.quarter))
+                .range([0, width])
+                .padding(0.2);
+
+            const y = d3.scaleLinear()
+                .domain([0, 2000000])
+                .range([height, 0]);
+
+            // Add bars
+            svg.selectAll('rect')
+                .data(data)
+                .enter().append('rect')
+                .attr('x', d => x(d.quarter))
+                .attr('y', d => y(d.revenue))
+                .attr('width', x.bandwidth())
+                .attr('height', d => height - y(d.revenue))
+                .attr('fill', colors.cyan)
+                .attr('stroke', colors.aqua)
+                .attr('stroke-width', 1);
+
+            // Add value labels
+            svg.selectAll('.label')
+                .data(data)
+                .enter().append('text')
+                .attr('x', d => x(d.quarter) + x.bandwidth() / 2)
+                .attr('y', d => y(d.revenue) - 10)
+                .attr('text-anchor', 'middle')
+                .style('fill', colors.text)
+                .style('font-size', '12px')
+                .text(d => `$${(d.revenue / 1000000).toFixed(1)}M`);
+
+            // Add axes
+            svg.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .style('color', colors.text);
+
+            svg.append('g')
+                .call(d3.axisLeft(y).tickFormat(d => `$${d/1000000}M`))
+                .style('color', colors.text);
+        }
+
+        // Chart 3: Pie Chart - User Engagement
+        function createChart3() {
+            const data = [
+                { platform: 'Mobile', users: 45 },
+                { platform: 'Desktop', users: 35 },
+                { platform: 'Tablet', users: 20 }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 30 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+            const radius = Math.min(width, height) / 2;
+
+            const svg = d3.select('#chart3')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${width/2 + margin.left},${height/2 + margin.top})`);
+
+            const color = d3.scaleOrdinal()
+                .domain(data.map(d => d.platform))
+                .range([colors.aqua, colors.pink, colors.cyan]);
+
+            const pie = d3.pie()
+                .value(d => d.users);
+
+            const arc = d3.arc()
+                .innerRadius(0)
+                .outerRadius(radius);
+
+            const arcs = svg.selectAll('arc')
+                .data(pie(data))
+                .enter().append('g');
+
+            arcs.append('path')
+                .attr('d', arc)
+                .attr('fill', d => color(d.data.platform))
+                .attr('stroke', colors.darkBg)
+                .attr('stroke-width', 2);
+
+            arcs.append('text')
+                .attr('transform', d => `translate(${arc.centroid(d)})`)
+                .attr('text-anchor', 'middle')
+                .style('fill', colors.darkBg)
+                .style('font-weight', 'bold')
+                .style('font-size', '14px')
+                .text(d => d.data.platform);
+
+            // Add legend
+            const legend = svg.append('g')
+                .attr('transform', `translate(${radius + 20}, -${radius/2})`);
+
+            legend.selectAll('rect')
+                .data(data)
+                .enter().append('rect')
+                .attr('x', 0)
+                .attr('y', (d, i) => i * 25)
+                .attr('width', 15)
+                .attr('height', 15)
+                .attr('fill', d => color(d.platform));
+
+            legend.selectAll('text')
+                .data(data)
+                .enter().append('text')
+                .attr('x', 20)
+                .attr('y', (d, i) => i * 25 + 12)
+                .style('fill', colors.text)
+                .style('font-size', '12px')
+                .text(d => `${d.platform} (${d.users}%)`);
+        }
+
+        // Chart 4: Area Chart - System Metrics
+        function createChart4() {
+            const data = [
+                { time: '00:00', cpu: 45, memory: 60, network: 30 },
+                { time: '04:00', cpu: 35, memory: 55, network: 25 },
+                { time: '08:00', cpu: 75, memory: 80, network: 65 },
+                { time: '12:00', cpu: 85, memory: 90, network: 75 },
+                { time: '16:00', cpu: 70, memory: 75, network: 60 },
+                { time: '20:00', cpu: 50, memory: 65, network: 40 }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const svg = d3.select('#chart4')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleBand()
+                .domain(data.map(d => d.time))
+                .range([0, width])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, 100])
+                .range([height, 0]);
+
+            const area = d3.area()
+                .x(d => x(d.time) + x.bandwidth() / 2)
+                .y0(height)
+                .y1(d => y(d.cpu));
+
+            const area2 = d3.area()
+                .x(d => x(d.time) + x.bandwidth() / 2)
+                .y0(height)
+                .y1(d => y(d.memory));
+
+            const area3 = d3.area()
+                .x(d => x(d.time) + x.bandwidth() / 2)
+                .y0(height)
+                .y1(d => y(d.network));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', colors.aqua)
+                .attr('fill-opacity', 0.3)
+                .attr('stroke', colors.aqua)
+                .attr('stroke-width', 2)
+                .attr('d', area);
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', colors.pink)
+                .attr('fill-opacity', 0.3)
+                .attr('stroke', colors.pink)
+                .attr('stroke-width', 2)
+                .attr('d', area2);
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', colors.cyan)
+                .attr('fill-opacity', 0.3)
+                .attr('stroke', colors.cyan)
+                .attr('stroke-width', 2)
+                .attr('d', area3);
+
+            // Add axes
+            svg.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .style('color', colors.text);
+
+            svg.append('g')
+                .call(d3.axisLeft(y))
+                .style('color', colors.text);
+        }
+
+        // Chart 5: Scatter Plot - Market Analysis
+        function createChart5() {
+            const data = [
+                { x: 20, y: 65, size: 15, category: 'A' },
+                { x: 35, y: 78, size: 25, category: 'B' },
+                { x: 50, y: 82, size: 30, category: 'C' },
+                { x: 65, y: 75, size: 20, category: 'A' },
+                { x: 80, y: 88, size: 35, category: 'B' },
+                { x: 45, y: 70, size: 18, category: 'C' },
+                { x: 70, y: 85, size: 28, category: 'A' },
+                { x: 25, y: 72, size: 22, category: 'B' }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const svg = d3.select('#chart5')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear()
+                .domain([0, 100])
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+                .domain([0, 100])
+                .range([height, 0]);
+
+            const color = d3.scaleOrdinal()
+                .domain(['A', 'B', 'C'])
+                .range([colors.aqua, colors.pink, colors.cyan]);
+
+            // Add grid
+            svg.append('g')
+                .attr('class', 'grid')
+                .call(d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(5))
+                .style('stroke', colors.surface)
+                .style('stroke-opacity', 0.3);
+
+            svg.append('g')
+                .attr('class', 'grid')
+                .call(d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(5))
+                .style('stroke', colors.surface)
+                .style('stroke-opacity', 0.3);
+
+            // Add dots
+            svg.selectAll('circle')
+                .data(data)
+                .enter().append('circle')
+                .attr('cx', d => x(d.x))
+                .attr('cy', d => y(d.y))
+                .attr('r', d => d.size / 3)
+                .attr('fill', d => color(d.category))
+                .attr('stroke', colors.darkBg)
+                .attr('stroke-width', 2);
+
+            // Add axes
+            svg.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .style('color', colors.text);
+
+            svg.append('g')
+                .call(d3.axisLeft(y))
+                .style('color', colors.text);
+        }
+
+        // Chart 6: Gauge Chart - Operational KPIs
+        function createChart6() {
+            const data = [
+                { metric: 'Efficiency', value: 78 },
+                { metric: 'Quality', value: 92 },
+                { metric: 'Speed', value: 85 }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 30 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+            const radius = Math.min(width, height) / 3;
+
+            const svg = d3.select('#chart6')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${width/2 + margin.left},${height/2 + margin.top})`);
+
+            data.forEach((d, i) => {
+                const angle = (i * 120 - 90) * Math.PI / 180;
+                const x = Math.cos(angle) * radius * 0.8;
+                const y = Math.sin(angle) * radius * 0.8;
+
+                // Draw gauge background
+                const gaugeGroup = svg.append('g')
+                    .attr('transform', `translate(${x},${y})`);
+
+                const arc = d3.arc()
+                    .innerRadius(20)
+                    .outerRadius(40)
+                    .startAngle(-Math.PI / 2)
+                    .endAngle(Math.PI / 2);
+
+                gaugeGroup.append('path')
+                    .attr('d', arc)
+                    .attr('fill', colors.surface)
+                    .attr('stroke', colors.aqua)
+                    .attr('stroke-width', 2);
+
+                // Draw gauge value
+                const valueArc = d3.arc()
+                    .innerRadius(20)
+                    .outerRadius(40)
+                    .startAngle(-Math.PI / 2)
+                    .endAngle(-Math.PI / 2 + (d.value / 100) * Math.PI);
+
+                gaugeGroup.append('path')
+                    .attr('d', valueArc)
+                    .attr('fill', colors.aqua);
+
+                // Add value text
+                gaugeGroup.append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', '0.35em')
+                    .style('fill', colors.text)
+                    .style('font-size', '14px')
+                    .style('font-weight', 'bold')
+                    .text(d.value + '%');
+
+                // Add metric label
+                gaugeGroup.append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', '60px')
+                    .style('fill', colors.text)
+                    .style('font-size', '12px')
+                    .text(d.metric);
+            });
+        }
+
+        // Chart 7: Network Graph - Data Flow
+        function createChart7() {
+            const nodes = [
+                { id: 'API', group: 1 },
+                { id: 'Database', group: 2 },
+                { id: 'Cache', group: 3 },
+                { id: 'Frontend', group: 1 },
+                { id: 'CDN', group: 3 },
+                { id: 'Analytics', group: 2 }
+            ];
+
+            const links = [
+                { source: 'API', target: 'Database', value: 5 },
+                { source: 'API', target: 'Cache', value: 3 },
+                { source: 'Frontend', target: 'API', value: 4 },
+                { source: 'Frontend', target: 'CDN', value: 2 },
+                { source: 'API', target: 'Analytics', value: 3 },
+                { source: 'Database', target: 'Analytics', value: 2 }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 30 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const svg = d3.select('#chart7')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(80))
+                .force('charge', d3.forceManyBody().strength(-300))
+                .force('center', d3.forceCenter(width / 2, height / 2));
+
+            const color = d3.scaleOrdinal()
+                .domain([1, 2, 3])
+                .range([colors.aqua, colors.pink, colors.cyan]);
+
+            const link = svg.append('g')
+                .selectAll('line')
+                .data(links)
+                .enter().append('line')
+                .attr('stroke', colors.aqua)
+                .attr('stroke-opacity', 0.6)
+                .attr('stroke-width', d => Math.sqrt(d.value));
+
+            const node = svg.append('g')
+                .selectAll('circle')
+                .data(nodes)
+                .enter().append('circle')
+                .attr('r', 15)
+                .attr('fill', d => color(d.group))
+                .attr('stroke', colors.darkBg)
+                .attr('stroke-width', 2)
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+
+            const label = svg.append('g')
+                .selectAll('text')
+                .data(nodes)
+                .enter().append('text')
+                .text(d => d.id)
+                .attr('text-anchor', 'middle')
+                .attr('dy', '0.35em')
+                .style('fill', colors.text)
+                .style('font-size', '12px')
+                .style('font-weight', 'bold');
+
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                node
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+
+                label
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+            });
+
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+
+        // Chart 8: Multi-line Chart - Strategic Overview
+        function createChart8() {
+            const data = [
+                { month: 'Jan', sales: 120, marketing: 80, development: 100 },
+                { month: 'Feb', sales: 140, marketing: 90, development: 110 },
+                { month: 'Mar', sales: 130, marketing: 85, development: 105 },
+                { month: 'Apr', sales: 160, marketing: 100, development: 120 },
+                { month: 'May', sales: 180, marketing: 110, development: 130 },
+                { month: 'Jun', sales: 200, marketing: 120, development: 140 }
+            ];
+
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const svg = d3.select('#chart8')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleBand()
+                .domain(data.map(d => d.month))
+                .range([0, width])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, 250])
+                .range([height, 0]);
+
+            const line = d3.line()
+                .x(d => x(d.month) + x.bandwidth() / 2)
+                .y(d => y(d.value));
+
+            // Sales line
+            svg.append('path')
+                .datum(data.map(d => ({ month: d.month, value: d.sales })))
+                .attr('fill', 'none')
+                .attr('stroke', colors.aqua)
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Marketing line
+            svg.append('path')
+                .datum(data.map(d => ({ month: d.month, value: d.marketing })))
+                .attr('fill', 'none')
+                .attr('stroke', colors.pink)
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Development line
+            svg.append('path')
+                .datum(data.map(d => ({ month: d.month, value: d.development })))
+                .attr('fill', 'none')
+                .attr('stroke', colors.cyan)
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Add dots
+            const colorsArray = [colors.aqua, colors.pink, colors.cyan];
+            const metrics = ['sales', 'marketing', 'development'];
+
+            metrics.forEach((metric, i) => {
+                svg.selectAll(`.dot-${metric}`)
+                    .data(data)
+                    .enter().append('circle')
+                    .attr('class', `dot-${metric}`)
+                    .attr('cx', d => x(d.month) + x.bandwidth() / 2)
+                    .attr('cy', d => y(d[metric]))
+                    .attr('r', 4)
+                    .attr('fill', colorsArray[i])
+                    .attr('stroke', colors.darkBg)
+                    .attr('stroke-width', 2);
+            });
+
+            // Add axes
+            svg.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .style('color', colors.text);
+
+            svg.append('g')
+                .call(d3.axisLeft(y))
+                .style('color', colors.text);
+
+            // Add legend
+            const legend = svg.append('g')
+                .attr('transform', `translate(${width - 100}, 0)`);
+
+            legend.selectAll('rect')
+                .data(metrics)
+                .enter().append('rect')
+                .attr('x', 0)
+                .attr('y', (d, i) => i * 20)
+                .attr('width', 15)
+                .attr('height', 15)
+                .attr('fill', (d, i) => colorsArray[i]);
+
+            legend.selectAll('text')
+                .data(metrics)
+                .enter().append('text')
+                .attr('x', 20)
+                .attr('y', (d, i) => i * 20 + 12)
+                .style('fill', colors.text)
+                .style('font-size', '12px')
+                .text(d => d.charAt(0).toUpperCase() + d.slice(1));
+        }
+
+        function generateAllCharts() {
+            // Clear existing charts
+            d3.selectAll('.chart svg').remove();
+            
+            // Generate new charts
+            createChart1();
+            createChart2();
+            createChart3();
+            createChart4();
+            createChart5();
+            createChart6();
+            createChart7();
+            createChart8();
+        }
+
+        function downloadAllCharts() {
+            // This would require additional libraries for canvas conversion
+            alert('Chart download functionality would require additional setup. For now, use browser screenshot tools.');
+        }
+
+        // Initialize charts on page load
+        window.addEventListener('load', generateAllCharts);
+    </script>
+</body>
+</html>
